@@ -50,26 +50,26 @@ SAC_CONFIG = {
 # }
 
 # # Lightweight (fast inference, <2 GB):
-# GNN_CONFIG = {
-#   "input_dim":       10,   # same number of per-node features
-#   "shared_num_layers": 4,  # fewer GCN layers
-#   "shared_hidden_dim": 128,  # much slimmer hidden channels
-#   "branch_num_layers": 2,  # shallow MLP heads
-#   "branch_hidden_dim":  64,  # slimmer branch channels
-#   "output_dim":         32,  # lower-dim action embedding
-#   "fusion_dim":         64,  # smaller post-fusion layer
-# }
+GNN_CONFIG = {
+   "input_dim":       10,   # same number of per-node features
+   "shared_num_layers": 4,  # fewer GCN layers
+   "shared_hidden_dim": 128,  # much slimmer hidden channels
+   "branch_num_layers": 2,  # shallow MLP heads
+   "branch_hidden_dim":  64,  # slimmer branch channels
+   "output_dim":         32,  # lower-dim action embedding
+   "fusion_dim":         64,  # smaller post-fusion layer
+ }
 
 # Mid‑range (medium speed, ≲6 GB)::
-GNN_CONFIG = {
-  "input_dim": 10,
-  "shared_num_layers": 6,
-  "shared_hidden_dim": 512,
-  "branch_num_layers": 3,
-  "branch_hidden_dim": 256,
-  "output_dim": 64,
-  "fusion_dim": 128,
-}
+#GNN_CONFIG = {
+ # "input_dim": 10,
+ # "shared_num_layers": 6,
+ # "shared_hidden_dim": 512,
+ # "branch_num_layers": 3,
+ # "branch_hidden_dim": 256,
+ # "output_dim": 64,
+ # "fusion_dim": 128,
+#}
 
 # # Heavy Slower (slower, up to ≲15 GB):
 # GNN_CONFIG = {
