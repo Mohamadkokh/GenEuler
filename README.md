@@ -286,8 +286,6 @@ If you use GenEuler in academic work, please cite the associated thesis:
 
 ## License
 
-Specify your license here (e.g., MIT). Example:
-
 ```text
 MIT License — see LICENSE file for details.
 ```
