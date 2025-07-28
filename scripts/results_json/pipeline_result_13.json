@@ -1,0 +1,75 @@
+{
+    "iteration": 13,
+    "add_material": {
+        "status": "skipped",
+        "message": "Initial material addition is only performed at iteration 1."
+    },
+    "fem": {
+        "status": "success",
+        "results": {
+            "iteration": 13,
+            "xdmf_file": "/app/src/assets/fem_results_13.xdmf",
+            "h5_file": "/app/src/assets/fem_results_13.h5",
+            "json_file": "/app/src/assets/fem_results_13.json"
+        }
+    },
+    "topology": {
+        "status": "success",
+        "iteration": 13,
+        "density_json": "/app/src/assets/topology_results_13.json",
+        "xdmf_path": "/app/src/assets/topology_density_13.xdmf",
+        "h5_path": "/app/src/assets/topology_density_13.h5"
+    },
+    "reward_fem": {
+        "status": "success",
+        "iteration": 13,
+        "total_reward": -3.6333693742409056e+21,
+        "reward_breakdown_path": "/app/src/assets/reward_fem_results_13.json"
+    },
+    "reward_topology": {
+        "status": "success",
+        "iteration": 13,
+        "total_reward": -4.163336325010967e-09,
+        "reward_breakdown_path": "/app/src/assets/reward_topology_results_13.json"
+    },
+    "reward_combined": {
+        "status": "success",
+        "iteration": 13,
+        "total_reward": -3.6333693742409056e+21,
+        "reward_breakdown_path": "/app/src/assets/reward_combined_result_13.json"
+    },
+    "merged_data": {
+        "status": "success",
+        "iteration": 13,
+        "merged_json_path": "/app/src/assets/merged_data_13.json",
+        "mesh_json_path": "/app/src/assets/mesh_data_13.json"
+    },
+    "sac_agent": {
+        "epoch": 39,
+        "loss": 100.0,
+        "num_additions": 150,
+        "num_removals": 0,
+        "add_head": [
+            [
+                0.2689414322376251,
+                0.2689414322376251,
+                0.7310585379600525
+            ],
+            [
+                0.2689414322376251,
+                0.2689414322376251,
+                0.7310585379600525
+            ],
+            [
+                0.2689414322376251,
+                0.2689414322376251,
+                0.7310585379600525
+            ]
+        ],
+        "rem_head": [
+            1.0,
+            1.0,
+            1.0
+        ]
+    }
+}

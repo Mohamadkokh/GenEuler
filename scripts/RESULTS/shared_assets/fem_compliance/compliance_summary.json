@@ -1,0 +1,219 @@
+[
+  {
+    "iteration": 1,
+    "ndofs": 141462,
+    "disp_norm": 345253317627064.7,
+    "load": 800.0,
+    "compliance": 431566647033.8309
+  },
+  {
+    "iteration": 2,
+    "ndofs": 134925,
+    "disp_norm": 3209904153.2568445,
+    "load": 800.0,
+    "compliance": 4012380.1915710554
+  },
+  {
+    "iteration": 3,
+    "ndofs": 134112,
+    "disp_norm": 4037944131.0049353,
+    "load": 800.0,
+    "compliance": 5047430.163756169
+  },
+  {
+    "iteration": 4,
+    "ndofs": 133623,
+    "disp_norm": 12496784138.098387,
+    "load": 800.0,
+    "compliance": 15620980.172622984
+  },
+  {
+    "iteration": 5,
+    "ndofs": 133158,
+    "disp_norm": 1625236611387.4211,
+    "load": 800.0,
+    "compliance": 2031545764.2342765
+  },
+  {
+    "iteration": 6,
+    "ndofs": 132702,
+    "disp_norm": 435776805369.6705,
+    "load": 800.0,
+    "compliance": 544721006.7120881
+  },
+  {
+    "iteration": 7,
+    "ndofs": 132327,
+    "disp_norm": 7016097929120.734,
+    "load": 800.0,
+    "compliance": 8770122411.400917
+  },
+  {
+    "iteration": 8,
+    "ndofs": 132024,
+    "disp_norm": 2887163110060.4336,
+    "load": 800.0,
+    "compliance": 3608953887.575542
+  },
+  {
+    "iteration": 9,
+    "ndofs": 131574,
+    "disp_norm": 7714028997752.823,
+    "load": 800.0,
+    "compliance": 9642536247.191029
+  },
+  {
+    "iteration": 10,
+    "ndofs": 131301,
+    "disp_norm": 15831536814084.854,
+    "load": 800.0,
+    "compliance": 19789421017.606068
+  },
+  {
+    "iteration": 11,
+    "ndofs": 130962,
+    "disp_norm": 13057867870513.65,
+    "load": 800.0,
+    "compliance": 16322334838.142063
+  },
+  {
+    "iteration": 12,
+    "ndofs": 130740,
+    "disp_norm": 79565541902876.23,
+    "load": 800.0,
+    "compliance": 99456927378.59529
+  },
+  {
+    "iteration": 13,
+    "ndofs": 130500,
+    "disp_norm": 1257185617876.099,
+    "load": 800.0,
+    "compliance": 1571482022.345124
+  },
+  {
+    "iteration": 14,
+    "ndofs": 130197,
+    "disp_norm": 54942697524923.35,
+    "load": 800.0,
+    "compliance": 68678371906.15419
+  },
+  {
+    "iteration": 15,
+    "ndofs": 129924,
+    "disp_norm": 64014934532788.47,
+    "load": 800.0,
+    "compliance": 80018668165.98558
+  },
+  {
+    "iteration": 16,
+    "ndofs": 129642,
+    "disp_norm": 354679755472.50525,
+    "load": 800.0,
+    "compliance": 443349694.34063154
+  },
+  {
+    "iteration": 17,
+    "ndofs": 129351,
+    "disp_norm": 5016712194924.815,
+    "load": 800.0,
+    "compliance": 6270890243.656019
+  },
+  {
+    "iteration": 18,
+    "ndofs": 129105,
+    "disp_norm": 7340479300136.216,
+    "load": 800.0,
+    "compliance": 9175599125.170269
+  },
+  {
+    "iteration": 19,
+    "ndofs": 128877,
+    "disp_norm": 108728497855950.36,
+    "load": 800.0,
+    "compliance": 135910622319.93794
+  },
+  {
+    "iteration": 20,
+    "ndofs": 128664,
+    "disp_norm": 15737542401007.455,
+    "load": 800.0,
+    "compliance": 19671928001.25932
+  },
+  {
+    "iteration": 21,
+    "ndofs": 128439,
+    "disp_norm": 4296953217155.31,
+    "load": 800.0,
+    "compliance": 5371191521.444138
+  },
+  {
+    "iteration": 22,
+    "ndofs": 128229,
+    "disp_norm": 21880695087075.79,
+    "load": 800.0,
+    "compliance": 27350868858.844738
+  },
+  {
+    "iteration": 23,
+    "ndofs": 128043,
+    "disp_norm": 8551337749456.718,
+    "load": 800.0,
+    "compliance": 10689172186.820898
+  },
+  {
+    "iteration": 24,
+    "ndofs": 127755,
+    "disp_norm": 74391139816832.08,
+    "load": 800.0,
+    "compliance": 92988924771.0401
+  },
+  {
+    "iteration": 25,
+    "ndofs": 127572,
+    "disp_norm": 18113690543152.83,
+    "load": 800.0,
+    "compliance": 22642113178.941036
+  },
+  {
+    "iteration": 26,
+    "ndofs": 127386,
+    "disp_norm": 1084249138393521.0,
+    "load": 800.0,
+    "compliance": 1355311422991.9014
+  },
+  {
+    "iteration": 27,
+    "ndofs": 127248,
+    "disp_norm": 22033240297018.605,
+    "load": 800.0,
+    "compliance": 27541550371.27326
+  },
+  {
+    "iteration": 28,
+    "ndofs": 127050,
+    "disp_norm": 1553421699096.6733,
+    "load": 800.0,
+    "compliance": 1941777123.8708417
+  },
+  {
+    "iteration": 29,
+    "ndofs": 126867,
+    "disp_norm": 37099113491179.914,
+    "load": 800.0,
+    "compliance": 46373891863.97489
+  },
+  {
+    "iteration": 30,
+    "ndofs": 126711,
+    "disp_norm": 16975929319231.023,
+    "load": 800.0,
+    "compliance": 21219911649.03878
+  },
+  {
+    "iteration": 31,
+    "ndofs": 126558,
+    "disp_norm": 13614406933753.896,
+    "load": 800.0,
+    "compliance": 17018008667.192371
+  }
+]
