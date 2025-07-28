@@ -1,204 +1,240 @@
-# GenEuler
+# GenEuler: Automated 3D Mesh Optimization with FEM + SIMP + SAC‑GNN
 
-```markdown
-<!--
-──────────────────────────────────────────────────────────────────────────────
- _/_/_/    _/_/    _/_/_/   _/_/_/      _/_/   _/_/_/   _/_/_/    _/_/_/
-  _/    _/    _/  _/    _/   _/    _/  _/    _/        _/    _/  _/
- _/    _/    _/  _/_/_/     _/_/_/    _/    _/  _/_/  _/_/_/    _/_/_/
-_/    _/    _/  _/         _/    _/  _/    _/    _/  _/    _/  _/
- _/_/_/  _/_/    _/        _/_/_/      _/_/   _/_/_/  _/    _/  _/_/_/
+GenEuler is an end‑to‑end research pipeline that couples high‑fidelity Finite Element Analysis (FEM) with density‑based topology optimization (SIMP) and a Soft Actor–Critic Graph Neural Network (SAC‑GNN) to automate local mesh edits for prosthetic‑grade structures.
 
-GenEuler · Automated 3-D Mesh Optimisation for Prosthetic Design
-──────────────────────────────────────────────────────────────────────────────
--->
-
-<div align="center">
-
-# 🧬 GenEuler
-
-**An end-to-end pipeline that combines high-fidelity FEM (DOLFINx), density-based  
-topology optimisation (SIMP) and a mesh-aware Soft-Actor-Critic Graph Neural  
-Network (SAC-GNN) to automate patient-specific prosthetic design.**
-
-</div>
-
-<p align="center">
-  <a href="https://github.com/your-org/GenEuler/actions"><img
-    src="https://github.com/your-org/GenEuler/workflows/CI/badge.svg" alt="CI status"></a>
-  <a href="https://zenodo.org/doi/10.5281/zenodo.•••"><img
-    src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.•••-blue.svg" alt="DOI"></a>
-  <a href="LICENSE"><img
-    src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
-</p>
+It is designed to be reproducible out‑of‑the‑box with Docker and dead‑simple to run.
 
 ---
 
-## ✨ Key features
+## Table of Contents
 
-| ✔                                     | Description |
-|---------------------------------------|-------------|
-| **Full-physics supervision**          | Solves a 3-D elasticity problem with DOLFINx + PETSc/GAMG **every RL step**. |
-| **Mesh-aware RL**                     | SAC agent encodes the *tetrahedral* mesh as a PyTorch-Geometric graph and proposes node-wise add/remove edits. |
-| **SIMP integration**                  | Classic density-based topology optimisation loop with volume-fraction monitoring. |
-| **Pluggable meshing service**         | Gmsh-based generator + JSON diffing utilities to track local edits and mesh health. |
-| **Rich telemetry**                    | Logs compliance, volume, reward, mesh quality & conditioning to CSV/MLflow. |
-| **One-command reproducibility**       | Docker + `poetry` lockfile; optional Singularity/Apptainer recipe for HPC. |
+* [Quick Start](#quick-start)
+* [What You Get](#what-you-get)
+* [Repo Layout](#repo-layout)
+* [How It Works](#how-it-works)
+* [Running the Pipeline](#running-the-pipeline)
+* [Results & Artifacts](#results--artifacts)
+* [Configuration](#configuration)
+* [Troubleshooting](#troubleshooting)
+* [Development Tips](#development-tips)
+* [Citing](#citing)
+* [License](#license)
+* [Acknowledgments](#acknowledgments)
 
 ---
 
-## 📂 Repository layout
+## Quick Start
 
+**One command to build and start all services (detached):**
+
+```bash
+docker-compose up --build -d
 ```
 
+**Run the full pipeline:**
+
+```bash
+cd scripts
+python pipeline.py
+```
+
+**Where are the outputs?**
+All results and figures are written under `scripts/` (see [Results & Artifacts](#results--artifacts)).
+
+**Stop everything when you’re done:**
+
+```bash
+docker-compose down
+```
+
+---
+
+## What You Get
+
+* End‑to‑end automation for **FEM → SIMP → RL mesh editing**
+* **Deterministic builds** via Docker
+* **Reproducible artifacts** (meshes, CSV metrics, figures)
+* **Human‑readable logs** for every optimization step
+
+---
+
+## Repo Layout
+
+> The pipeline is tolerant to missing data and will generate baseline meshes from code. Exact folders may vary slightly; the ones below are the important touch points for users.
+
+```
 GenEuler/
-├── gen\_euler            # Core Python package
-│   ├── fem/             # DOLFINx wrappers, BC helpers, compliance calc
-│   ├── topo/            # SIMP update kernels & volume monitors
-│   ├── rl/              # SAC-GNN actor/critic, replay buffer, config
-│   ├── mesh/            # Gmsh generator, JSON diff utils, quality metrics
-│   └── cli.py           # `gen-euler` command-line entry point
-├── examples/            # End-to-end scripts & Jupyter notebooks
-├── docker/              # Dockerfile, docker-compose.yml, HPC recipe
-├── tests/               # PyTest suite (CPU-only mocks)
-├── docs/                # Sphinx sources, API reference, figures
-├── LICENSE
-└── README.md
-
-````
+├─ docker/                 # Dockerfiles, build context (if present)
+├─ scripts/                # Entry points, pipeline, and where results are written
+│  ├─ pipeline.py          # Main orchestrator (run this)
+│  ├─ *.py                 # Modules for FEM, SIMP, RL, logging, plotting
+│  ├─ results*/            # (Created on run) CSVs, images, XDMF/HDF5, JSON meshes
+│  └─ logs*/               # (Created on run) pipeline logs
+├─ docker-compose.yml
+├─ requirements.txt        # (Optional) For local dev outside Docker
+└─ README.md               # (This file)
+```
 
 ---
 
-## 🚀 Quick start
+## How It Works
 
-> **Prerequisites:** Linux/macOS, Python ≥ 3.10, a C++17 compiler, and working
-> MPI. For GPU training, install the matching CUDA toolkit.
+**High‑level loop (one optimization step):**
+
+```text
+[FEM mesh & state]
+        ↓
+  FEM solve (DOLFINx/PETSc)  →  compliance, stresses
+        ↓
+  SIMP update (density field, Vf target monitored)
+        ↓
+  SAC‑GNN policy (PyTorch Geometric) proposes local mesh edits
+        ↓
+  Mesh update + logging
+        ↺ iterate
+```
+
+Artifacts are produced at each step so you can inspect progress and diagnose behavior.
+
+---
+
+## Running the Pipeline
+
+**Build & start services (detached):**
 
 ```bash
-# 1. Clone
-git clone https://github.com/your-org/GenEuler.git && cd GenEuler
+docker-compose up --build -d
+```
 
-# 2. Create environment (CPU example)
-curl -sSL https://install.python-poetry.org | python -
-poetry install --with dev
-
-# 3. Run the minimal demo (takes ≈ 5 min on laptop CPU)
-poetry run gen-euler run examples/minimal.yaml
-````
-
-**Docker instead?**
+**Launch the pipeline:**
 
 ```bash
-docker build -t geneuler .
-docker run --gpus all -v $PWD:/workspace geneuler \
-       gen-euler run examples/gpu_foot_prosthesis.yaml
+cd scripts
+python pipeline.py
 ```
 
-The first run generates:
-
-* `outputs/meshes/*.xdmf` – meshes per iteration
-* `outputs/metrics.csv`   – compliance, reward, volume, quality
-* `outputs/checkpoints/*.pt` – SAC agent weights
-
-Open the notebook `examples/visualise.ipynb` to explore the optimisation trail.
-
----
-
-## 🏗  Architecture overview
-
-```mermaid
-flowchart LR
-  A[Current mesh (Mₖ)] -->|Graph encode| B(SAC-GNN Actor)
-  B -->|Add/remove proposals| C{Mesh service}
-  C -->|Edited mesh (Mₖ₊₁)| D[DOLFINx solve]
-  C -->|Density update| E[SIMP kernel]
-  D -->|Displacements| E
-  E -->|ρ update| C
-  D -->|Compliance, stresses| F[Reward composer]
-  F -->|Rₖ ∈ [-1,1]| G[Replay buffer]
-  G -->|Sample batch| H{SAC update}
-  H -->|θ←…| B
-```
-
----
-
-## ⚙️  Configuration
-
-All experiment settings live in a single YAML:
-
-```yaml
-env:
-  material: steel
-  vf_target: 0.50
-rl:
-  algo: SAC
-  actor_lr: 1e-5
-  critic_lr: 1e-5
-  entropy_coeff: 0.2
-  max_epochs: 100
-mesh:
-  h_global: 4.0
-  h_attach: 0.8
-```
-
-Run with
+**Follow logs (optional):**
 
 ```bash
-gen-euler run configs/my_experiment.yaml
+tail -f logs/pipeline.log
 ```
 
----
+> If `logs/` doesn’t exist yet, it will be created at first run.
 
-## 📊  Reproducing the thesis results
+**Shut down when finished:**
 
 ```bash
-poetry run gen-euler run configs/thesis_foot_C2.yaml
-poetry run python scripts/make_plots.py outputs/thesis_foot_C2
+docker-compose down
 ```
 
-Figures and tables from the MSc thesis will appear in `outputs/thesis_foot_C2/plots/`.
+---
+
+## Results & Artifacts
+
+All outputs are written under `scripts/`. You can expect to see:
+
+### Metrics (CSV)
+
+* `compliance_summary.csv` — iteration, compliance `C(M_k)`, norms
+* `reward_summary.csv` — per‑step rewards (FEM, Topology, combined)
+* `mesh_size_summary.csv` — nodes, tets, deltas
+
+### Meshes & Topology
+
+* `convex_hull_{k}.json` — nodes + tetra connectivity per iteration
+* `topology_density_{k}.(xdmf|h5)` — SIMP density fields
+
+### Figures
+
+* `Reward_combined.png`, `Reward_fem_to.png`
+* `cluster_1-2_new.png`, `cluster_1-31_new.png`
+
+### Logs
+
+* `logs/pipeline.log` — orchestrator logs
+* Additional per‑module logs if enabled
+
+> **Tip:** If your run created a timestamped `results_YYYYmmdd_HHMMSS/` folder under `scripts/`, everything above will be inside it.
 
 ---
 
-## 🤝  Contributing
+## Configuration
 
-1. Fork → feature branch → PR.
-2. Follow `pre-commit` hooks (`black`, `ruff`, `isort`, `mypy`).
-3. Add a unit test in `tests/` and, if relevant, a minimal YAML example.
-4. For major features, open a discussion first!
+Most defaults are sensible for a first run. Common knobs:
+
+* **SAC / RL** — learning rates, entropy coeff, discount factor, replay size
+* **Topology (SIMP)** — penalty, density bounds, target volume fraction (monitored)
+* **FEM** — material law, BCs, solver tolerances
+* **Mesh editing** — add/remove thresholds, max radius, candidate counts
+
+Configuration variables are typically defined in Python modules under `scripts/` (and/or read from environment variables). If you need to change them, edit the corresponding module and re‑run `pipeline.py`.
 
 ---
 
-## 📜  License
+## Troubleshooting
 
-> MIT – see [`LICENSE`](LICENSE).
-> If you use GenEuler in academic work, please cite:
+**“Service is up but Python can’t be found”**
+Make sure you’re inside the containerized environment or that the service exposes the `scripts/` folder. If you’re running locally, ensure your Python matches `requirements.txt`.
+
+**“No module named …”**
+The service may not have built correctly. Rebuild with:
+
+```bash
+docker-compose build --no-cache
+docker-compose up -d
+```
+
+**“Permission denied” on mounted volumes (Linux/WSL2)**
+Try setting more permissive mount options or run:
+
+```bash
+sudo chown -R $USER:$USER scripts
+```
+
+**Memory pressure / slow solves**
+FEM + RL can be compute‑heavy. Close other apps or allocate more memory/cores to Docker.
+
+---
+
+## Development Tips
+
+* **Iterate quickly:** after editing code in `scripts/`, you can usually re‑run `python pipeline.py` without rebuilding the container (depending on your compose bind mounts).
+* **Clean state:** if you want a fresh run from scratch, remove the previous results directory under `scripts/` before re‑running.
+* **Logs:** add `logger.debug(...)` statements liberally; they’ll appear in `logs/pipeline.log`.
+
+---
+
+## Citing
+
+If you use GenEuler in academic work, please cite the associated thesis:
 
 ```bibtex
-@misc{kokh2025geneuler,
-  title   = {GenEuler: Reinforcement Learning Meets Finite-Element Topology Optimisation},
-  author  = {Kokh, Mohamad and Lessmann, Stefan},
-  year    = {2025},
-  note    = {MSc thesis, ESMT Berlin},
-  url     = {https://github.com/your-org/GenEuler}
+@thesis{Kokh2025GenEuler,
+  title   = {GenEuler Pipeline for Automated 3D Mesh Optimization:
+             Integrating FEM Simulation, Topology Optimization, and SAC-GNN Modeling},
+  author  = {Mohamad Kokh},
+  school  = {ESMT Berlin},
+  year    = {2025}
 }
 ```
 
 ---
 
-## 🙋‍♂️  Contact
+## License
 
-*Issues, questions, or want to collaborate?*
-Open an issue or ping **@mohamad-kokh** on GitHub.
+Specify your license here (e.g., MIT). Example:
 
-Happy meshing! 🦾
-
+```text
+MIT License — see LICENSE file for details.
 ```
 
-*Pro-tips*
+---
 
-* Replace `your-org` with the real GitHub namespace.  
-* Add or remove badges (e.g. Codecov) as soon as the integrations are live.  
-* Keep the **Quick start** section ruthlessly short; move advanced options to `docs/`.
-::contentReference[oaicite:0]{index=0}
-```
+## Acknowledgments
+
+* DOLFINx/FEniCSx, PETSc/SLEPc
+* PyTorch + PyTorch Geometric
+* LindheXtend for the clinical use case
+* Advisors and colleagues who provided feedback
+
+---
