@@ -64,15 +64,79 @@ docker-compose down
 
 ```
 GenEuler/
-├─ docker/                 # Dockerfiles, build context (if present)
-├─ scripts/                # Entry points, pipeline, and where results are written
-│  ├─ pipeline.py          # Main orchestrator (run this)
-│  ├─ *.py                 # Modules for FEM, SIMP, RL, logging, plotting
-│  ├─ results*/            # (Created on run) CSVs, images, XDMF/HDF5, JSON meshes
-│  └─ logs*/               # (Created on run) pipeline logs
 ├─ docker-compose.yml
-├─ requirements.txt        # (Optional) For local dev outside Docker
-└─ README.md               # (This file)
+├─ LICENSE
+├─ README.md
+├─ hardware_report.html
+├─ fem-service/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/
+│     ├─ api.py
+│     ├─ db.py
+│     └─ fem_analysis.py
+├─ mesh-service/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/
+│     ├─ api.py
+│     ├─ db.py
+│     ├─ mesh.py
+│     ├─ mesh_convert_subprocess.py
+│     └─ mesh_subprocess.py
+├─ pre-processing/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/
+│     ├─ api.py
+│     ├─ db.py
+│     └─ merge.py
+├─ topology-service/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/
+│     ├─ api.py
+│     ├─ db.py
+│     └─ topology_solver.py
+├─ reward-fem/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/ (api.py, db.py, compute_reward.py)
+├─ reward-topology/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/ (api.py, db.py, compute_reward.py)
+├─ reward-combined/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/ (api.py, db.py, compute_reward.py)
+├─ sac-agent/
+│  ├─ Dockerfile
+│  ├─ requirements.txt
+│  └─ src/
+│     ├─ api.py
+│     ├─ agent.py
+│     ├─ config.py
+│     ├─ db.py
+│     ├─ evaluate.py
+│     ├─ model.py
+│     ├─ train.py
+│     └─ utils.py
+└─ scripts/
+│  ├─ pipeline.py
+│  ├─ RESULTS
+│  ├   └─  shared_assets
+│  ├           └─ ALL ADDITIONAL RESULTS SUCH AS convex_hull, sac_output, fem_analysis, etc.
+│  └─ results_json/
+      ├─ pipeline_result_1.json
+      ├─ pipeline_result_2.json
+      ├─ pipeline_result_3.json
+      ├─ pipeline_result_4.json
+      ├─ pipeline_result_5.json
+      ├─ pipeline_result_6.json
+      ├─ ...
+      └─  pipeline_result_31.json
+
 ```
 
 ---
