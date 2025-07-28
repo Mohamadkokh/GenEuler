@@ -294,9 +294,9 @@ MIT License — see LICENSE file for details.
 
 ## Acknowledgments
 
+* Advisor Prof. Dr. Stefan Lessmann who provided critical feedback throughout development
+* LindheXtend for the clinical use case
 * DOLFINx/FEniCSx, PETSc/SLEPc
 * PyTorch + PyTorch Geometric
-* LindheXtend for the clinical use case
-* Advisors and colleagues who provided feedback
 
 ---
