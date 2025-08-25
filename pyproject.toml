@@ -1,0 +1,61 @@
+[build-system]
+requires = ["hatchling>=1.5"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geneuler"
+version = "0.2.1"
+description = "Lightweight mesh generation and I/O (Gmsh+meshio) for GenEuler."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+authors = [{ name = "Mohamad Kokh", email = "mohamad.kokh@gmail.com" }]
+keywords = ["mesh", "gmsh", "tetrahedral", "xdmf", "stl", "step"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+]
+
+dependencies = ["numpy", "meshio", "gmsh", "scikit-fem", "scipy", "pyamg", "h5py"]
+
+[project.urls]
+Homepage = "https://github.com/your-org/geneuler"
+Issues   = "https://github.com/your-org/geneuler/issues"
+
+[tool.hatch.build.targets.wheel]
+# packages is the recommended way for src-layout
+packages = ["src/geneuler"]
+
+[tool.hatch.build.targets.sdist]
+# be explicit about what to ship
+include = [
+  "src/**",
+  "pyproject.toml",
+  "README.md",
+  "LICENSE*",
+  "examples/**"      # optional; keep only if you want examples in sdist
+]
+exclude = [
+  ".git/**",
+  ".github/**",
+  ".vscode/**",
+  ".idea/**",
+  "dist/**",
+  "build/**",
+  "out/**",
+  ".venv/**",
+  ".venv*/**",
+  "venv/**",
+  "venv*/**",
+  "**/__pycache__/**",
+  "**/*.pyc",
+  "**/*.pyo",
+]

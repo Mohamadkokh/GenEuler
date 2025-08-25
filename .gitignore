@@ -1,0 +1,13 @@
+# envs & caches
+.venv*/
+venv*/
+__pycache__/
+*.pyc
+.out/
+out/
+build/
+dist/
+*.egg-info/
+.ipynb_checkpoints/
+.vscode/
+.idea/
